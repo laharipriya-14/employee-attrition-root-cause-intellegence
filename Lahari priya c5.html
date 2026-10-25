@@ -1,0 +1,173 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Employee Attrition Root Cause Intelligence</title>
+<style>
+:root{--bg:#f0f4ff;--card:#fff;--tx:#1b1f3b;--mu:#667090;--bd:#dfe5fb;--p:#4f46e5;--t:#0ea5a4;--k:#e11d74;--a:#f59e0b;--g:#16a34a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b1024;--card:#161c3d;--tx:#eef0ff;--mu:#9aa3cc;--bd:#283060}}
+:root[data-theme=dark]{--bg:#0b1024;--card:#161c3d;--tx:#eef0ff;--mu:#9aa3cc;--bd:#283060}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.5 'Segoe UI',system-ui,sans-serif}
+header{background:linear-gradient(120deg,#0ea5a4,#4f46e5 50%,#d946ef);color:#fff;padding:20px 24px}
+header h1{margin:0;font-size:23px}header p{margin:3px 0 0;opacity:.92}
+.fb{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:10px 24px;background:var(--card);border-bottom:1px solid var(--bd);font-size:12px;color:var(--mu)}
+nav{display:flex;gap:6px;flex-wrap:wrap;padding:10px 24px;background:var(--card);border-bottom:1px solid var(--bd);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+nav button{border:0;background:transparent;color:var(--mu);padding:7px 13px;border-radius:20px;font-weight:600;cursor:pointer}
+nav button.on{background:linear-gradient(90deg,var(--t),var(--p),var(--k));color:#fff}
+main{padding:18px 24px;max-width:1280px;margin:auto}.tab{display:none}.tab.on{display:block}
+.grid{display:grid;gap:14px}.k6{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}.g2{grid-template-columns:repeat(auto-fit,minmax(380px,1fr))}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:15px;overflow-x:auto}
+.kpi{border-top:4px solid var(--c0)}.kpi b{font-size:25px;display:block}.kpi small{color:var(--mu)}
+h2{margin:0 0 9px;font-size:16px}p{margin:6px 0}
+.bad{color:var(--k)}.ok{color:var(--g)}
+table{border-collapse:collapse;width:100%;min-width:600px}th,td{padding:6px 8px;text-align:left;border-bottom:1px solid var(--bd);font-size:13px}th{color:var(--mu);font-size:12px}
+.pill{padding:2px 10px;border-radius:12px;color:#fff;font-size:12px;font-weight:700;white-space:nowrap}
+select,input[type=range]{accent-color:var(--p)}select{padding:5px;border-radius:8px;border:1px solid var(--bd);background:var(--card);color:var(--tx)}
+.warn{background:#f59e0b22;border-left:4px solid var(--a);padding:8px 12px;border-radius:8px;margin:8px 0;font-size:13px}
+#chat{height:330px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:4px}
+.m{max-width:92%;padding:9px 13px;border-radius:14px}.u{align-self:flex-end;background:linear-gradient(90deg,var(--t),var(--p));color:#fff}.b{background:var(--bg);border:1px solid var(--bd)}
+.chip{border:1px solid var(--p);color:var(--p);background:transparent;border-radius:16px;padding:4px 10px;margin:3px 3px 0 0;cursor:pointer;font-size:12px}
+#q{flex:1;padding:9px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);min-width:0}
+.btn{border:0;background:var(--p);color:#fff;border-radius:10px;padding:9px 16px;cursor:pointer;font-weight:700}
+.row{display:flex;gap:8px;margin-top:8px}.sl{display:grid;grid-template-columns:150px 1fr 60px;gap:8px;align-items:center;margin:8px 0}
+.pc{border-left:6px solid var(--c0);background:var(--bg);border-radius:10px;padding:10px 12px}
+.tr{font:12px/1.5 ui-monospace,monospace;color:var(--mu);background:var(--bg);border-radius:8px;padding:8px;margin-top:6px}
+svg{max-width:100%;height:auto}text{fill:var(--mu);font-size:11px}
+</style></head><body>
+<header><h1>🧭 Employee Attrition Root Cause Intelligence</h1><p>Multi-agent analytics: DataPrep → EDA → RootCause → Segmentation → Risk → Recommendation → Chat · 1,500 synthetic employees (generated in-browser)</p></header>
+<div class="fb"><b>Filters</b><select id="fd"></select><select id="fl"></select><select id="fm"></select><select id="ft"></select><label>📂 Upload CSV <input type="file" id="up" accept=".csv"></label><span id="upm"></span></div>
+<nav id="nav"></nav>
+<main>
+<section class="tab on" id="t0"><div class="grid k6" id="kpi"></div><div class="grid g2" style="margin-top:14px">
+<div class="card"><h2>Attrition % by department</h2><div id="o1"></div></div><div class="card"><h2>Attrition % by tenure band</h2><div id="o2"></div></div>
+<div class="card"><h2>Attrition % by job level</h2><div id="o3"></div></div><div class="card"><h2>Monthly exits (last 12 months, assumed)</h2><div id="o4"></div></div>
+<div class="card"><h2>Managers with highest attrition (n ≥ 15)</h2><div id="o5"></div></div><div class="card"><h2>📝 Executive summary</h2><div id="rep"></div><div class="row"><button class="btn" id="cp">Copy summary</button><span id="cpm"></span></div></div></div></section>
+<section class="tab" id="t1"><div class="grid g2"><div class="card"><h2>Ranked drivers (mean |SHAP|, linear model)</h2><div id="r1"></div></div><div class="card"><h2>Model quality (5-fold CV)</h2><div id="r2"></div></div></div>
+<div class="card" style="margin-top:14px"><h2>Significance table (chi-square per factor + logistic odds ratio)</h2><div id="r3"></div></div>
+<div class="card" style="margin-top:14px"><h2>Correlation heatmap</h2><div id="r4"></div></div>
+<div class="card" style="margin-top:14px"><h2>⚖️ Ethics &amp; fairness check</h2><div id="r5"></div></div></section>
+<section class="tab" id="t2"><div class="card"><h2>🎯 Risk radar — active employees <select id="rl"><option value="">All risk</option><option>High</option><option>Medium</option><option>Low</option></select></h2><div id="rk"></div></div></section>
+<section class="tab" id="t3"><div class="grid g2"><div class="card"><h2>Risk personas (KMeans, k=4)</h2><div id="s1" class="grid"></div></div><div class="card"><h2>Pay vs overtime by persona</h2><div id="s2"></div></div></div></section>
+<section class="tab" id="t4"><div class="card"><h2>💡 Prioritised interventions (replacement cost = 75% of annual salary)</h2><div id="iv"></div></div></section>
+<section class="tab" id="t5"><div class="card"><h2>🎛️ What-if simulator</h2>
+<div class="sl"><span>Salary increase</span><input type="range" id="w1" min="0" max="20" value="5"><b id="x1"></b></div>
+<div class="sl"><span>Overtime reduction</span><input type="range" id="w2" min="0" max="50" value="20"><b id="x2"></b></div>
+<div class="sl"><span>Extra training hours</span><input type="range" id="w3" min="0" max="40" value="10"><b id="x3"></b></div><div id="wi"></div></div></section>
+<section class="tab" id="t6"><div class="grid g2"><div class="card"><h2>🤖 Ask the agent</h2><div id="chat"></div><div id="chips"></div><div class="row"><input id="q" placeholder="Why is Sales attrition high?"><button class="btn" id="go">Send</button></div></div>
+<div class="card"><h2>🧾 Reasoning trail</h2><div id="trail" class="tr"></div></div></div></section>
+</main>
+<script>
+const $=i=>document.getElementById(i),f1=x=>(+x).toFixed(1),pc=x=>(x*100).toFixed(1)+'%',sg=z=>1/(1+Math.exp(-z));
+const m$=x=>x>=1e7?'₹'+(x/1e7).toFixed(2)+' Cr':x>=1e5?'₹'+(x/1e5).toFixed(1)+' L':'₹'+Math.round(x).toLocaleString('en-IN');
+let sd=42;const r=()=>(sd=(sd*16807)%2147483647)/2147483647,nr=()=>Math.sqrt(-2*Math.log(r()||.5))*Math.cos(6.283*r()),cl=(x,a,b)=>Math.max(a,Math.min(b,x));
+const DP=['Sales','Engineering','Support','Operations','Finance','HR','Marketing'],BAD=['M07','M19','M31'],LV=['Associate','Analyst','Specialist','Lead','Manager'];
+const FN=['compa_ratio','overtime_hours_month','engagement_score','months_since_promotion','training_hours','absent_days_last_year','last_hike_pct','tenure_years','avg_weekly_hours','mgr_rate'];
+const LB={compa_ratio:'Pay (compa-ratio)',overtime_hours_month:'Overtime h/month',engagement_score:'Engagement',months_since_promotion:'Months since promotion',training_hours:'Training hours',absent_days_last_year:'Absent days',last_hike_pct:'Last hike %',tenure_years:'Tenure',avg_weekly_hours:'Weekly hours',mgr_rate:'Manager attrition rate'};
+const FL={compa_ratio:[e=>e.compa_ratio<.9,'< 0.90'],overtime_hours_month:[e=>e.overtime_hours_month>30,'> 30 h'],engagement_score:[e=>e.engagement_score<5,'< 5'],months_since_promotion:[e=>e.months_since_promotion>24,'> 24 mo'],training_hours:[e=>e.training_hours<10,'< 10 h'],absent_days_last_year:[e=>e.absent_days_last_year>12,'> 12 d'],mgr_rate:[e=>e.mgr_rate>.3,'> 30%'],last_hike_pct:[e=>e.last_hike_pct<4,'< 4%'],tenure_years:[e=>e.tenure_years<2,'< 2 yrs'],avg_weekly_hours:[e=>e.avg_weekly_hours>48,'> 48 h']};
+let E=[];
+function gen(){const R=[];for(let i=0;i<1500;i++){const m=1+Math.floor(r()*40),dp=DP[m%7],lv=1+Math.min(4,Math.floor(Math.abs(nr())*1.3)),age=cl(Math.round(24+lv*3+nr()*6),21,60),ten=+cl(Math.abs(nr())*3.5+.3,.2,age-20).toFixed(1);
+let compa=cl(1+nr()*.1-(r()<.13?.14:0),.7,1.3);const hrs=cl(42+nr()*3+(dp=='Sales'||dp=='Support'?2.5:0),35,62),ot=cl(Math.round(Math.max(0,(hrs-40)*5+nr()*8)),0,70),perf=cl(Math.round(3+nr()*.8),1,5),eng=+cl(7-ot/25+nr()*1.4+(perf-3)*.2,1,10).toFixed(1),tr=Math.round(r()*6),th=cl(Math.round(tr*5+nr()*6+8),0,60),ab=cl(Math.round(6+Math.abs(nr())*6+ot/12),0,35),pm=Math.round(6+Math.abs(nr())*16+ten*.8);
+const e={employee_id:'E'+(1001+i),department:dp,job_role:dp+' '+LV[lv-1],job_level:'L'+lv,age,tenure_years:ten,manager_id:'M'+String(m).padStart(2,'0'),monthly_salary:Math.round((25000+lv*22000)*(.85+r()*.3)*compa),compa_ratio:+compa.toFixed(2),last_hike_pct:+cl(6+nr()*3-(compa<.9?2.5:0),0,20).toFixed(1),months_since_promotion:pm,performance_rating:perf,avg_weekly_hours:+hrs.toFixed(1),overtime_hours_month:ot,projects_assigned:1+Math.floor(r()*5+ot/25),absent_days_last_year:ab,engagement_score:eng,satisfaction_score:+cl(eng+nr()*.9,1,10).toFixed(1),trainings_completed:tr,training_hours:th,remote_days_per_week:Math.floor(r()*4),commute_km:Math.round(3+r()*40)};
+e.z0=1.1*(compa<.9)+.9*(ot>30)+.9*(eng<5)+.8*(pm>24)+.7*(th<10)+.6*(ab>12)+1.6*BAD.includes(e.manager_id)+(dp=='Sales'?.4:dp=='Support'?.3:0)-.06*ten;R.push(e)}
+let b=-3;for(let k=0;k<25;k++){const m=R.reduce((a,e)=>a+sg(e.z0+b),0)/1500;b+=(Math.log(.18/.82)-Math.log(m/(1-m)))*.9}
+R.forEach(e=>{e.attrition=r()<sg(e.z0+b)?1:0;e.exit_month=1+Math.floor(r()*12);delete e.z0});return R}
+// DataPrepAgent
+let prepLog='';function prep(R){let imp=0,win=0;const med=f=>{const v=R.map(e=>+e[f]).filter(x=>!isNaN(x)).sort((a,b)=>a-b);return v[v.length>>1]||0};
+const base=FN.filter(f=>f!='mgr_rate');base.forEach(f=>{const md=med(f),v=R.map(e=>+e[f]).filter(x=>!isNaN(x)).sort((a,b)=>a-b),lo=v[Math.floor(v.length*.01)],hi=v[Math.floor(v.length*.99)];R.forEach(e=>{if(isNaN(+e[f])||e[f]===''){e[f]=md;imp++}e[f]=+e[f];if(e[f]<lo||e[f]>hi){e[f]=cl(e[f],lo,hi);win++}})});
+const S={},N={};R.forEach(e=>{S[e.manager_id]=(S[e.manager_id]||0)+e.attrition;N[e.manager_id]=(N[e.manager_id]||0)+1});
+R.forEach(e=>{e.attrition=+e.attrition;e.mgr_rate=N[e.manager_id]>1?(S[e.manager_id]-e.attrition)/(N[e.manager_id]-1):0;e.overtime_ratio=e.overtime_hours_month/160;e.pay_gap=1-e.compa_ratio;e.promotion_gap=e.months_since_promotion-24;e.engagement_x_workload=e.engagement_score*(1-e.overtime_ratio)});
+prepLog=`DataPrepAgent → ${R.length} rows; imputed ${imp} missing; winsorised ${win} outliers (1–99 pct); added overtime_ratio, pay_gap, promotion_gap, engagement_x_workload, leave-one-out manager attrition rate.`;return R}
+// RootCauseAgent model
+let MU,SDv,W,B,CVm,MED={};
+const zs=e=>FN.map((f,k)=>(e[f]-MU[k])/SDv[k]),prob=e=>{const z=zs(e);return sg(B+W.reduce((a,w,k)=>a+w*z[k],0))};
+function fit(X,y){const n=X.length,d=X[0].length;let w=Array(d).fill(0),b=Math.log(.18/.82);for(let it=0;it<300;it++){const g=Array(d).fill(0);let gb=0;for(let i=0;i<n;i++){let z=b;for(let k=0;k<d;k++)z+=w[k]*X[i][k];const q=sg(z)-y[i];gb+=q;for(let k=0;k<d;k++)g[k]+=q*X[i][k]}for(let k=0;k<d;k++)w[k]-=.6*(g[k]/n+.002*w[k]);b-=.6*gb/n}return{w,b}}
+function auc(p,y){const o=p.map((v,i)=>i).sort((a,b)=>p[a]-p[b]);let rs=0,np=0;o.forEach((i,k)=>{if(y[i]){rs+=k+1;np++}});const nn=p.length-np;return(rs-np*(np+1)/2)/(np*nn)}
+function train(){MU=FN.map(f=>E.reduce((a,e)=>a+e[f],0)/E.length);SDv=FN.map((f,k)=>Math.sqrt(E.reduce((a,e)=>a+(e[f]-MU[k])**2,0)/E.length)||1);
+FN.forEach(f=>MED[f]=E.map(e=>e[f]).sort((a,b)=>a-b)[E.length>>1]);const X=E.map(zs),y=E.map(e=>e.attrition),pr=Array(E.length);
+for(let f=0;f<5;f++){const tr=[],ts=[];E.forEach((e,i)=>(i%5==f?ts:tr).push(i));const m=fit(tr.map(i=>X[i]),tr.map(i=>y[i]));ts.forEach(i=>pr[i]=sg(m.b+m.w.reduce((a,w,k)=>a+w*X[i][k],0)))}
+let tp=0,fp=0,fn=0;pr.forEach((p,i)=>{const pd=p>=.3;if(pd&&y[i])tp++;else if(pd)fp++;else if(y[i])fn++});CVm={auc:auc(pr,y),prec:tp/(tp+fp),rec:tp/(tp+fn)};const m=fit(X,y);W=m.w;B=m.b;E.forEach(e=>e.risk=prob(e))}
+const cat=p=>p>=.35?'High':p>=.2?'Medium':'Low',cc=p=>p=='High'?'#e11d74':p=='Medium'?'#f59e0b':'#16a34a';
+const contrib=e=>{const z=zs(e);return FN.map((f,k)=>({f,c:W[k]*z[k]})).sort((a,b)=>b.c-a.c)};
+const erfc=x=>{const t=1/(1+.3275911*x);return t*(.254829592+t*(-.284496736+t*(1.421413741+t*(-1.453152027+t*1.061405429))))*Math.exp(-x*x)};
+// charts
+const bars=(a,fm=pc,mx)=>{mx=mx||Math.max(...a.map(x=>x.v),1e-9);return`<svg viewBox="0 0 520 ${a.length*30+6}">${a.map((x,i)=>`<text x="2" y="${i*30+19}">${x.l}</text><rect x="150" y="${i*30+4}" width="${Math.max(2,x.v/mx*300)}" height="22" rx="5" fill="${x.c||'#4f46e5'}"/><text x="${156+Math.max(2,x.v/mx*300)}" y="${i*30+19}" style="fill:var(--tx);font-weight:700">${fm(x.v)}</text>`).join('')}</svg>`};
+const grp=(A,fn)=>{const g={};A.forEach(e=>{const k=fn(e);(g[k]=g[k]||[]).push(e)});return Object.entries(g).map(([k,v])=>({l:k,n:v.length,v:v.reduce((a,e)=>a+e.attrition,0)/v.length}))};
+const rc=v=>v>=.25?'#e11d74':v>=.17?'#f59e0b':'#16a34a',band=t=>t<1?'<1 yr':t<3?'1–3 yrs':t<5?'3–5 yrs':t<10?'5–10 yrs':'10+ yrs';
+const pear=(a,b)=>{const n=a.length,ma=a.reduce((x,y)=>x+y,0)/n,mb=b.reduce((x,y)=>x+y,0)/n;let s=0,va=0,vb=0;for(let i=0;i<n;i++){s+=(a[i]-ma)*(b[i]-mb);va+=(a[i]-ma)**2;vb+=(b[i]-mb)**2}return s/Math.sqrt(va*vb||1)};
+const tbl=(h,rows)=>`<table><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</table>`;
+const rate=a=>a.length?a.reduce((x,e)=>x+e.attrition,0)/a.length:0,cost=e=>.75*12*e.monthly_salary;
+// filters
+let S=[],A=[],PERS=[];
+function opts(id,t,v){$(id).innerHTML=`<option value="">${t}</option>`+v.map(x=>`<option>${x}</option>`).join('')}
+const getS=()=>E.filter(e=>(!$('fd').value||e.department==$('fd').value)&&(!$('fl').value||e.job_level==$('fl').value)&&(!$('fm').value||e.manager_id==$('fm').value)&&(!$('ft').value||band(e.tenure_years)==$('ft').value));
+// segmentation
+function kmeans(){const F=['compa_ratio','overtime_hours_month','engagement_score','months_since_promotion','training_hours'],X=E.map(e=>F.map(f=>(e[f]-MU[FN.indexOf(f)])/SDv[FN.indexOf(f)]));let C=[0,1,2,3].map(i=>X[i*377+5].slice()),lab=[];
+for(let it=0;it<20;it++){lab=X.map(x=>{let b=0,bd=1e9;C.forEach((c,k)=>{const d=c.reduce((a,v,j)=>a+(v-x[j])**2,0);if(d<bd){bd=d;b=k}});return b});C=C.map((c,k)=>{const m=X.filter((x,i)=>lab[i]==k);return m.length?c.map((_,j)=>m.reduce((a,x)=>a+x[j],0)/m.length):c})}
+E.forEach((e,i)=>e.seg=lab[i]);const used={};PERS=C.map((c,k)=>{const t=[];if(c[0]<-.4)t.push('Underpaid');if(c[1]>.4)t.push('overworked');if(c[2]<-.4)t.push('disengaged');if(c[3]>.4)t.push('stalled-career');if(c[4]<-.4)t.push('under-trained');let n=t.length?t.slice(0,3).join(', '):'Stable core';n=n[0].toUpperCase()+n.slice(1)+' group';if(used[n])n+=' ('+(k+1)+')';used[n]=1;return{k,name:n}})}
+const COL=['#4f46e5','#0ea5a4','#e11d74','#f59e0b'];
+// render
+function render(){S=getS();A=S.filter(e=>!e.attrition);const L=S.filter(e=>e.attrition),ar=rate(S),tc=L.reduce((a,e)=>a+cost(e),0);
+$('kpi').innerHTML=[['Headcount (in view)',S.length,'#4f46e5'],['Attrition rate',pc(ar),rc(ar)],['Avg tenure',f1(S.reduce((a,e)=>a+e.tenure_years,0)/(S.length||1))+' yrs','#0ea5a4'],['Est. annual attrition cost',m$(tc),'#f59e0b'],['High-risk active',A.filter(e=>cat(e.risk)=='High').length,'#e11d74']].map(k=>`<div class="card kpi" style="--c0:${k[2]}"><small>${k[0]}</small><b>${k[1]}</b></div>`).join('');
+const gd=g=>g.sort((a,b)=>b.v-a.v).map(x=>({l:x.l+' (n='+x.n+')',v:x.v,c:rc(x.v)}));
+$('o1').innerHTML=bars(gd(grp(S,e=>e.department)));$('o2').innerHTML=bars(gd(grp(S,e=>band(e.tenure_years))));$('o3').innerHTML=bars(gd(grp(S,e=>e.job_level)));
+const mo=Array.from({length:12},(_,i)=>L.filter(e=>e.exit_month==i+1).length),mx=Math.max(...mo,1);
+$('o4').innerHTML=`<svg viewBox="0 0 520 200"><path d="${mo.map((v,i)=>(i?'L':'M')+(30+i*43)+','+(170-v/mx*140)).join('')}" fill="none" stroke="#e11d74" stroke-width="3"/>${mo.map((v,i)=>`<circle cx="${30+i*43}" cy="${170-v/mx*140}" r="4" fill="#e11d74"/><text x="${24+i*43}" y="192">M${i+1}</text><text x="${24+i*43}" y="${160-v/mx*140}">${v}</text>`).join('')}</svg>`;
+const mg=grp(S,e=>e.manager_id).filter(x=>x.n>=15).sort((a,b)=>b.v-a.v).slice(0,6);$('o5').innerHTML=bars(mg.map(x=>({l:x.l+' (n='+x.n+')'+(BAD.includes(x.l)?' ⚠':''),v:x.v,c:rc(x.v)})));
+const dr=drivers(S).slice(0,3).map(d=>LB[d.f]).join(', '),worst=grp(S,e=>e.department).sort((a,b)=>b.v-a.v)[0];
+SUM=`Attrition is ${pc(ar)} across ${S.length} employees, costing about ${m$(tc)} a year in replacement. Highest department: ${worst?worst.l+' ('+pc(worst.v)+')':'n/a'}. Top drivers: ${dr}. ${A.filter(e=>cat(e.risk)=='High').length} active employees are high risk. Model CV AUC ${f1(CVm.auc*100)/100}. Associations only; not proof of causation.`;$('rep').innerHTML=`<p>${SUM}</p><div class="warn">Limitations: synthetic data, correlation ≠ causation, in-browser model is logistic regression.</div>`;
+rootc();radar();segs();ivs();wif()}
+let SUM='';
+function drivers(Sx){return FN.map((f,k)=>({f,k,w:W[k],imp:Sx.reduce((a,e)=>a+Math.abs(W[k]*(e[f]-MU[k])/SDv[k]),0)/(Sx.length||1)})).sort((a,b)=>b.imp-a.imp)}
+function rootc(){const D=drivers(S);$('r1').innerHTML=bars(D.map(d=>({l:LB[d.f],v:d.imp,c:d.w>0?'#e11d74':'#0ea5a4'})),x=>f1(x*100)/100)+'<p style="color:var(--mu)">Pink = raises attrition risk, teal = lowers it. Linear SHAP values (exact for logistic regression); the Python build uses XGBoost + TreeSHAP.</p>';
+$('r2').innerHTML=tbl(['Metric','Value'],[['ROC-AUC (5-fold CV)',f1(CVm.auc*100)/100],['Precision @0.30',pc(CVm.prec)],['Recall @0.30',pc(CVm.rec)],['Training rows',E.length]])+'<div class="warn">Age is excluded from the model. Results show association, not causation. Validate before acting on individuals.</div>';
+const rows=D.map(d=>{const [fn,th]=FL[d.f],a=S.filter(fn),b=S.filter(e=>!fn(e)),ra=rate(a),rb=rate(b),ya=a.reduce((x,e)=>x+e.attrition,0),yb=b.reduce((x,e)=>x+e.attrition,0),n=S.length,ex=(k,t)=>(k-t)**2/(t||1);let chi=0;if(a.length&&b.length){const tl=ya+yb,Ea=a.length*tl/n,Eb=b.length*tl/n,Fa=a.length-Ea,Fb=b.length-Eb;chi=ex(ya,Ea)+ex(yb,Eb)+ex(a.length-ya,Fa)+ex(b.length-yb,Fb)}const p=erfc(Math.sqrt(chi/2));
+return[`<b>${LB[d.f]}</b>`,th,a.length,pc(ra),pc(rb),rb?f1(ra/rb)+'×':'–',p<.001?'<0.001':p.toFixed(3),`<span class="pill" style="background:${p<.05?'#16a34a':'#94a3b8'}">${p<.05?'Significant':'n.s.'}</span>`,f1(Math.exp(d.w)),d.w>0?'↑ risk':'↓ risk']});
+$('r3').innerHTML=tbl(['Driver','Flag rule','Flagged n','Attr. flagged','Attr. others','Rel. risk','χ² p-value','Result','Odds ratio / SD','Direction'],rows);
+const V=[...FN.slice(0,9),'attrition'],M=V.map(f=>S.map(e=>+e[f])),c=26;let sv=`<svg viewBox="0 0 ${150+V.length*c} ${150+V.length*c}">`;V.forEach((a,i)=>{sv+=`<text x="${145}" y="${i*c+17}" text-anchor="end">${(LB[a]||'Attrition').slice(0,20)}</text>`;V.forEach((b,j)=>{const v=S.length>2?pear(M[i],M[j]):0;sv+=`<rect x="${150+j*c}" y="${i*c}" width="${c-1}" height="${c-1}" fill="${v>0?'#4f46e5':'#e11d74'}" opacity="${Math.min(1,Math.abs(v)).toFixed(2)}"><title>${a} × ${b}: ${v.toFixed(2)}</title></rect>`})});$('r4').innerHTML=sv+'</svg><p style="color:var(--mu)">Indigo = positive, pink = negative correlation.</p>';
+const ag=grp(S,e=>e.age<30?'<30':e.age<40?'30–39':e.age<50?'40–49':'50+'),hr=grp(S.filter(e=>!e.attrition),e=>e.age<30?'<30':e.age<40?'30–39':e.age<50?'40–49':'50+'),hs={};S.filter(e=>!e.attrition).forEach(e=>{});const hi=band2=>0;
+const gaps=ag.map(x=>x.v),gap=Math.max(...gaps)-Math.min(...gaps);$('r5').innerHTML=`<p>Age and gender are <b>not</b> used in the model or recommendations. Age bands below are monitored only to detect disparate impact.</p>`+tbl(['Age band','n','Observed attrition'],ag.sort((a,b)=>a.l>b.l?1:-1).map(x=>[x.l,x.n,pc(x.v)]))+`<div class="warn">${gap>.05?'⚠ Attrition gap across age bands is '+f1(gap*100)+' pts. Review for indirect bias before acting.':'✔ No large age-band disparity detected ('+f1(gap*100)+' pts).'} Results are aggregated; use individual scores only for supportive conversations.</div>`}
+function radar(){const lv=$('rl').value,T=A.filter(e=>!lv||cat(e.risk)==lv).sort((a,b)=>b.risk-a.risk).slice(0,50);
+$('rk').innerHTML=`<p style="color:var(--mu)">${A.length} active in view; showing top ${T.length}. Thresholds: High ≥ 35%, Medium ≥ 20%.</p>`+tbl(['ID','Dept','Manager','Level','Risk','Band','Top 3 drivers (SHAP)'],T.map(e=>[e.employee_id,e.department,e.manager_id,e.job_level,pc(e.risk),`<span class="pill" style="background:${cc(cat(e.risk))}">${cat(e.risk)}</span>`,contrib(e).slice(0,3).map(c=>`${LB[c.f]} ${f1(e[c.f]*(c.f=='mgr_rate'?100:1))}${c.f=='mgr_rate'?'%':''}`).join(' · ')]))}
+$('rl').onchange=radar;
+function segs(){$('s1').innerHTML=PERS.map(p=>{const g=S.filter(e=>e.seg==p.k);if(!g.length)return'';const av=f=>f1(g.reduce((a,e)=>a+e[f],0)/g.length);return`<div class="pc" style="--c0:${COL[p.k]}"><b>${p.name}</b> · ${g.length} employees · attrition <b style="color:${rc(rate(g))}">${pc(rate(g))}</b><br><span style="color:var(--mu)">Compa ${(g.reduce((a,e)=>a+e.compa_ratio,0)/g.length).toFixed(2)} · OT ${av('overtime_hours_month')}h · Engagement ${av('engagement_score')} · Since promo ${av('months_since_promotion')}mo · Training ${av('training_hours')}h</span></div>`}).join('');
+$('s2').innerHTML=`<svg viewBox="0 0 520 280"><line x1="40" y1="250" x2="510" y2="250" stroke="var(--bd)"/><line x1="40" y1="10" x2="40" y2="250" stroke="var(--bd)"/>${S.filter((e,i)=>i%3==0).map(e=>`<circle cx="${40+(e.compa_ratio-.7)/.6*470}" cy="${250-e.overtime_hours_month/70*240}" r="3.5" fill="${COL[e.seg]}" opacity=".6"/>`).join('')}<text x="200" y="272">Compa-ratio →</text><text x="44" y="22">Overtime h/month</text></svg><p>${PERS.map(p=>`<span class="pill" style="background:${COL[p.k]}">${p.name}</span> `).join('')}</p>`}
+// RecommendationAgent
+const cavg=()=>rate(E);
+const IV=[['Pay correction','Raise compa-ratio to 0.95 where below 0.90',e=>e.compa_ratio<.9,e=>({compa_ratio:.95}),e=>e.monthly_salary*(.95/e.compa_ratio-1)*12],
+['Overtime cap','Cap overtime at 20 h/month, backfill capacity',e=>e.overtime_hours_month>30,e=>({overtime_hours_month:20,avg_weekly_hours:e.avg_weekly_hours-2}),e=>(e.overtime_hours_month-20)*12*e.monthly_salary/160*.6],
+['Promotion review','Fast-track review where > 24 months since promotion',e=>e.months_since_promotion>24,e=>({months_since_promotion:12}),e=>e.monthly_salary*.04*12],
+['Manager coaching','Coaching and skip-level check-ins for high-attrition managers',e=>e.mgr_rate>.3,e=>({mgr_rate:cavg()}),e=>8000],
+['Training plan','Individual plan to reach 30 training hours',e=>e.training_hours<10,e=>({training_hours:30}),e=>(30-e.training_hours)*1200],
+['Engagement programme','Stay interviews, recognition, team projects',e=>e.engagement_score<5,e=>({engagement_score:6.5}),e=>15000],
+['Wellbeing and flexible work','Flexible schedule, wellbeing support',e=>e.absent_days_last_year>12,e=>({absent_days_last_year:8}),e=>12000]];
+function ivCalc(){return IV.map(([n,d,c,mod,cst])=>{const g=A.filter(c);let av=0,co=0,be=0;g.forEach(e=>{const dp=Math.max(0,e.risk-prob({...e,...mod(e)}));av+=dp;be+=dp*cost(e);co+=cst(e)});return{n,d,hc:g.length,av,co,be,roi:co?(be-co)/co:0}}).sort((a,b)=>b.roi-a.roi)}
+function ivs(){const R=ivCalc();$('iv').innerHTML=bars(R.map(x=>({l:x.n.slice(0,22),v:Math.max(0,x.roi),c:x.roi>1?'#16a34a':x.roi>0?'#f59e0b':'#e11d74'})),x=>f1(x*100)+'%')+tbl(['#','Intervention','Action','Affected','Leavers avoided','Programme cost','Avoided cost','Net','ROI'],R.map((x,i)=>[i+1,`<b>${x.n}</b>`,x.d,x.hc,f1(x.av),m$(x.co),m$(x.be),m$(x.be-x.co),`<b class="${x.roi>0?'ok':'bad'}">${f1(x.roi*100)}%</b>`]))+'<div class="warn">Estimates use model-implied risk changes: they assume the association is causal and may overstate impact. Pilot first.</div>'}
+// what-if
+function wif(){const a=+$('w1').value,o=+$('w2').value,t=+$('w3').value;$('x1').textContent=a+'%';$('x2').textContent=o+'%';$('x3').textContent='+'+t+'h';
+let b0=0,b1=0,pc_=0;A.forEach(e=>{b0+=e.risk;const n={...e,compa_ratio:e.compa_ratio*(1+a/100),overtime_hours_month:e.overtime_hours_month*(1-o/100),training_hours:e.training_hours+t};b1+=prob(n);pc_+=e.monthly_salary*12*a/100+t*1200+e.overtime_hours_month*o/100*12*e.monthly_salary/160*.6});
+const n=A.length||1,av=b0-b1,sv=A.reduce((x,e)=>x+cost(e),0)/n*av;$('wi').innerHTML=tbl(['Metric','Before','After'],[['Expected attrition (active)',pc(b0/n),pc(b1/n)],['Expected leavers',f1(b0),f1(b1)]])+`<p>Leavers avoided: <b class="ok">${f1(av)}</b> · Replacement cost saved: <b class="ok">${m$(sv)}</b> · Programme cost: <b>${m$(pc_)}</b> · Net: <b class="${sv-pc_>0?'ok':'bad'}">${m$(sv-pc_)}</b></p>`}
+['w1','w2','w3'].forEach(i=>$(i).oninput=wif);
+// ChatAgent
+const tr=[];const say=(h,u)=>{const d=document.createElement('div');d.className='m '+(u?'u':'b');d.innerHTML=h;$('chat').appendChild(d);$('chat').scrollTop=1e9};
+const log=t=>{tr.push(t);$('trail').innerHTML=tr.slice(-14).map(x=>'• '+x).join('<br>')};
+function ask(q0){if(!q0.trim())return;say(q0,1);$('q').value='';const q=q0.toLowerCase();log('User: '+q0);let h='';const dp=DP.find(d=>q.includes(d.toLowerCase()));
+if(/what if|cut|reduce|raise|increase/.test(q)){const nm=+(q.match(/(\d+)/)||[0,10])[1],ov=/overtime/.test(q),tg=/train/.test(q),sl=!ov&&!tg;log(`Tool what_if(${ov?'overtime -'+nm+'%':tg?'training +'+nm+'h':'salary +'+nm+'%'}) on ${A.length} active`);let b0=0,b1=0;A.forEach(e=>{b0+=e.risk;b1+=prob({...e,compa_ratio:e.compa_ratio*(sl?1+nm/100:1),overtime_hours_month:e.overtime_hours_month*(ov?1-nm/100:1),training_hours:e.training_hours+(tg?nm:0)})});const sv=A.reduce((x,e)=>x+cost(e),0)/(A.length||1)*(b0-b1);h=`Projected attrition among active staff: <b>${pc(b0/A.length)} → ${pc(b1/A.length)}</b>. Leavers avoided ${f1(b0-b1)}, replacement cost saved <b>${m$(sv)}</b> (before programme cost).`}
+else if(/manager|coach/.test(q)){log('Tool attrition_by(manager)');const g=grp(S,e=>e.manager_id).filter(x=>x.n>=15).sort((a,b)=>b.v-a.v).slice(0,5);h='Managers needing support:'+bars(g.map(x=>({l:x.l+' n='+x.n,v:x.v,c:rc(x.v)})))}
+else if(dp){log(`Tool attrition_by(department=${dp}); compare driver prevalence vs company`);const g=S.filter(e=>e.department==dp),o=S.filter(e=>e.department!=dp);const x=Object.keys(FL).map(f=>({f,d:g.filter(FL[f][0]).length/(g.length||1)-o.filter(FL[f][0]).length/(o.length||1)})).sort((a,b)=>b.d-a.d).slice(0,3);log('Result: top gaps '+x.map(y=>y.f).join(', '));h=`<b>${dp}</b> attrition is <b>${pc(rate(g))}</b> vs ${pc(rate(o))} elsewhere. Over-represented risk factors: `+bars(x.map(y=>({l:LB[y.f],v:Math.max(0,y.d),c:'#e11d74'})),v=>'+'+f1(v*100)+' pts')}
+else if(/risk|who|leave/.test(q)){log('Tool risk_scores(active)');const t=[...A].sort((a,b)=>b.risk-a.risk).slice(0,5);h='Highest-risk active employees:<br>'+t.map(e=>`${e.employee_id} (${e.department}) <b>${pc(e.risk)}</b> – ${contrib(e).slice(0,2).map(c=>LB[c.f]).join(', ')}`).join('<br>')}
+else if(/roi|recommend|intervention|retain/.test(q)){log('Tool recommend() → ranked by ROI');const R=ivCalc().slice(0,3);h='Top interventions by ROI:'+bars(R.map(x=>({l:x.n.slice(0,22),v:Math.max(0,x.roi),c:'#16a34a'})),v=>f1(v*100)+'%')}
+else if(/driver|cause|factor|why|reason/.test(q)){log('Tool root_cause() → standardised logistic coefficients');const D=drivers(S).slice(0,5);h='Top drivers of attrition:'+bars(D.map(d=>({l:LB[d.f],v:d.imp,c:d.w>0?'#e11d74':'#0ea5a4'})),v=>f1(v*100)/100)}
+else h='Try: “Why is Sales attrition high?”, “Which managers need support?”, “What if we cut overtime by 20%?”, “Who is at risk?”, “Recommend interventions”.';
+setTimeout(()=>say(h),300);log('Answer grounded in dataset; no values invented')}
+$('go').onclick=()=>ask($('q').value);$('q').onkeydown=e=>e.key=='Enter'&&ask($('q').value);
+$('chips').innerHTML=['Why is Sales attrition high?','Which managers need support?','What if we cut overtime by 20%?','Who is at risk?','Recommend interventions'].map(t=>`<button class="chip">${t}</button>`).join('');$('chips').onclick=e=>e.target.className=='chip'&&ask(e.target.textContent);
+// upload
+const REQ=['employee_id','department','manager_id','job_level','tenure_years','monthly_salary','compa_ratio','last_hike_pct','months_since_promotion','avg_weekly_hours','overtime_hours_month','absent_days_last_year','engagement_score','training_hours','attrition','age'];
+$('up').onchange=ev=>{const f=ev.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{const ln=rd.result.trim().split(/\r?\n/),h=ln[0].split(',').map(x=>x.trim().toLowerCase()),miss=REQ.filter(c=>!h.includes(c));if(miss.length){$('upm').innerHTML=`<b class="bad">Missing columns: ${miss.join(', ')}</b>`;return}
+const R=ln.slice(1).map(l=>{const v=l.split(',');const o={};h.forEach((c,i)=>o[c]=v[i]);return o});E=prep(R);init();$('upm').innerHTML=`<b class="ok">Loaded ${E.length} rows</b>`};rd.readAsText(f)};
+$('cp').onclick=()=>{try{navigator.clipboard.writeText(SUM).then(()=>$('cpm').textContent='Copied ✔')}catch(x){$('cpm').textContent='Select and copy the text above'}};
+// init
+const TB=['Overview','Root Causes','Risk Radar','Segments','Interventions','What-if','Ask the Agent'];
+$('nav').innerHTML=TB.map((t,i)=>`<button class="${i?'':'on'}" data-i="${i}">${['📊','🔍','🎯','🧩','💡','🎛️','🤖'][i]} ${t}</button>`).join('');
+$('nav').onclick=e=>{const i=e.target.dataset.i;if(i==null)return;[...document.querySelectorAll('nav button')].forEach((b,k)=>b.classList.toggle('on',k==i));document.querySelectorAll('.tab').forEach((t,k)=>t.classList.toggle('on',k==i))};
+function init(){train();kmeans();opts('fd','All departments',[...new Set(E.map(e=>e.department))]);opts('fl','All levels',[...new Set(E.map(e=>e.job_level))].sort());opts('fm','All managers',[...new Set(E.map(e=>e.manager_id))].sort());opts('ft','All tenure',['<1 yr','1–3 yrs','3–5 yrs','5–10 yrs','10+ yrs']);
+['fd','fl','fm','ft'].forEach(i=>$(i).onchange=render);render();tr.length=0;log('DataPrepAgent: '+prepLog);log(`RootCauseAgent: logistic regression, CV AUC ${f1(CVm.auc*100)/100}`);log('SegmentationAgent: KMeans k=4 → '+PERS.map(p=>p.name).join('; '));log('RiskAgent: scored '+E.filter(e=>!e.attrition).length+' active employees');log('RecommendationAgent: 7 interventions ranked by ROI')}
+E=prep(gen());init();say('Hi! I call the analysis agents as tools and show every step in the Reasoning trail. Ask about departments, managers, drivers, risk, ROI or what-if scenarios.');
+</script></body></html>
